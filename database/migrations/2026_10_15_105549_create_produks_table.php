@@ -19,8 +19,7 @@ return new class extends Migration
             $table->integer('stok');
             $table->enum('satuan', ['pcs', 'unit', 'box']);
             $table->decimal('harga_satuan');
-            $table->string('kondisi');
-            $table->string('keterangan');
+            $table->enum('kondisi', ['Baik','Rusak Ringan', 'Rusak Berat']);
             $table->timestamps();
         });
     }

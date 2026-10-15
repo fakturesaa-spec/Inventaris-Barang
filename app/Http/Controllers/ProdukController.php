@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProdukController extends Controller
 {
@@ -13,7 +14,8 @@ class ProdukController extends Controller
     public function index()
     {
         $produks = Produk::all();
-        return view("produk.index", compact("produks"));
+
+        return view('produk.index', compact('produks'));
     }
 
     /**
@@ -21,7 +23,7 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        //
+        return view('produk.create');
     }
 
     /**
@@ -29,7 +31,19 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kode_barang' => 'required|unique:produks',
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'stok' => 'required|min:0',
+            'satuan' => 'required',
+            'harga_satuan' => 'required',
+            'kondisi' => 'required',
+        ]);
+
+        Produk::create($request->all());
+
+        return redirect()->route('produk.index')->with('success', 'Data Berhasil Di Buat');
     }
 
     /**
@@ -37,7 +51,7 @@ class ProdukController extends Controller
      */
     public function show(Produk $produk)
     {
-        //
+        return view('produk.show', compact('produk'));
     }
 
     /**
@@ -45,7 +59,7 @@ class ProdukController extends Controller
      */
     public function edit(Produk $produk)
     {
-        //
+        return view('produk.edit', compact('produk'));
     }
 
     /**
@@ -53,7 +67,19 @@ class ProdukController extends Controller
      */
     public function update(Request $request, Produk $produk)
     {
-        //
+        $request->validate([
+            'kode_barang' => ['required', Rule::unique('produks')->ignore($produk->id)],
+            'nama_barang' => 'required',
+            'kategori' => 'required',
+            'stok' => 'required|min:0',
+            'satuan' => 'required',
+            'harga_satuan' => 'required',
+            'kondisi' => 'required',
+        ]);
+
+        $produk->update($request->all());
+
+        return redirect()->route('produk.index')->with('success', 'Data Berhasil DI Update');
     }
 
     /**
@@ -61,6 +87,8 @@ class ProdukController extends Controller
      */
     public function destroy(Produk $produk)
     {
-        //
+        $produk->delete();
+
+        return redirect()->route('produk.index')->with('success', 'Berhasil Menghapus Produk');
     }
 }
