@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class ProdukController extends Controller
 {
@@ -68,13 +67,13 @@ class ProdukController extends Controller
     public function update(Request $request, Produk $produk)
     {
         $request->validate([
-            'kode_barang' => ['required', Rule::unique('produks')->ignore($produk->id)],
-            'nama_barang' => 'required',
-            'kategori' => 'required',
-            'stok' => 'required|min:0',
-            'satuan' => 'required',
-            'harga_satuan' => 'required',
-            'kondisi' => 'required',
+            'kode_barang' => 'required|unique:barangs,kode_barang,'.$produk->id,
+            'nama_barang' => 'required|string',
+            'kategori'    => 'required|in:Elektronik,ATK,Furniture,Lainnya',
+            'stok'        => 'required|integer|min:0',
+            'satuan'      => 'required|in:pcs,unit,box',
+            'harga_satuan'=> 'required|numeric|min:0',
+            'kondisi'     => 'required|in:Baik,Rusak Ringan,Rusak Berat',
         ]);
 
         $produk->update($request->all());
