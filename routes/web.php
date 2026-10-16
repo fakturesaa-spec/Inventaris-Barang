@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProdukController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,5 +20,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
-Route::resource('produk',ProdukController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('produk', ProdukController::class);
+});

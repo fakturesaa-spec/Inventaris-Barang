@@ -13,8 +13,13 @@ class ProdukController extends Controller
     public function index()
     {
         $produks = Produk::all();
+        $totalProduk = Produk::count();
+        $totalStok = Produk::sum('stok');
+        $totalKategori = Produk::query()->distinct()->count('kategori');
+        $totalBaik = Produk::where('kondisi', 'Baik')->count();
 
-        return view('produk.index', compact('produks'));
+
+        return view('produk.index', compact('produks', 'totalProduk', 'totalStok', 'totalKategori', 'totalBaik'));
     }
 
     /**
@@ -69,11 +74,11 @@ class ProdukController extends Controller
         $request->validate([
             'kode_barang' => 'required|unique:barangs,kode_barang,'.$produk->id,
             'nama_barang' => 'required|string',
-            'kategori'    => 'required|in:Elektronik,ATK,Furniture,Lainnya',
-            'stok'        => 'required|integer|min:0',
-            'satuan'      => 'required|in:pcs,unit,box',
-            'harga_satuan'=> 'required|numeric|min:0',
-            'kondisi'     => 'required|in:Baik,Rusak Ringan,Rusak Berat',
+            'kategori' => 'required|in:Elektronik,ATK,Furniture,Lainnya',
+            'stok' => 'required|integer|min:0',
+            'satuan' => 'required|in:pcs,unit,box',
+            'harga_satuan' => 'required|numeric|min:0',
+            'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
         ]);
 
         $produk->update($request->all());
