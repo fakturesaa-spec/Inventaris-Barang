@@ -4,22 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ProdukController extends Controller
 {
+ public function dashboard()
+    {
+        $milikSaya = Produk::where('user_id', Auth::id());
+
+        $totalProduk = (clone $milikSaya)->count();
+        $totalStok = (clone $milikSaya)->sum('stok');
+
+        $totalKategori = (clone $milikSaya)->whereNotNull('kategori')->distinct()->count('kategori');
+        $totalBaik = (clone $milikSaya)->where('kondisi', 'Baik')->count();
+        $jumlahPerKategori = (clone $milikSaya)->selectRaw('kategori, COUNT(*) as jumlah')->groupBy('kategori')->orderBy('kategori')->get();
+        $produkTerbaru = (clone $milikSaya)->latest()->take(5)->get();
+
+        return view('produk.dashboard', compact(
+            'totalProduk',
+            'totalStok',
+            'totalKategori',
+            'totalBaik',
+            'jumlahPerKategori',
+            'produkTerbaru'
+        ));
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $produks = Produk::all();
-        $totalProduk = Produk::count();
-        $totalStok = Produk::sum('stok');
-        $totalKategori = Produk::query()->distinct()->count('kategori');
-        $totalBaik = Produk::where('kondisi', 'Baik')->count();
+        $userId = Auth::id();
 
+        $produks = Produk::where('user_id', $userId)
+            ->latest()
+            ->get();
 
-        return view('produk.index', compact('produks', 'totalProduk', 'totalStok', 'totalKategori', 'totalBaik'));
+        return view('produk.index', compact('produks'));
     }
 
     /**
@@ -35,17 +58,19 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'kode_barang' => 'required|unique:produks',
-            'nama_barang' => 'required',
-            'kategori' => 'required',
-            'stok' => 'required|min:0',
-            'satuan' => 'required',
-            'harga_satuan' => 'required',
-            'kondisi' => 'required',
+        $data = $request->validate([
+            'kode_barang' => 'required', Rule::unique('produks', 'kode_barang')->where('user_id', Auth::id()),
+            'nama_barang' => 'required|string',
+            'kategori' => 'required|in:Elektronik,ATK,Furniture,Lainnya',
+            'stok' => 'required|integer|min:0',
+            'satuan' => 'required|in:pcs,unit,box',
+            'harga_satuan' => 'required|numeric|min:0',
+            'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat',
         ]);
 
-        Produk::create($request->all());
+        $data['user_id'] = Auth::id();
+
+        Produk::create($data);
 
         return redirect()->route('produk.index')->with('success', 'Data Berhasil Di Buat');
     }
@@ -72,7 +97,7 @@ class ProdukController extends Controller
     public function update(Request $request, Produk $produk)
     {
         $request->validate([
-            'kode_barang' => 'required|unique:barangs,kode_barang,'.$produk->id,
+            'kode_barang' => 'required|unique:produks,kode_barang,'.$produk->id,
             'nama_barang' => 'required|string',
             'kategori' => 'required|in:Elektronik,ATK,Furniture,Lainnya',
             'stok' => 'required|integer|min:0',
