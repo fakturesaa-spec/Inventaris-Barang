@@ -26,39 +26,6 @@ Dibuat untuk Tes Magang ARRE Tech.
 - Bootstrap 5
 - Laravel Breeze (autentikasi)
 
-## Cara Instalasi
-1. Clone repositori
-```bash
-   git clone https://github.com/username/Inventaris-Barang.git
-   cd Inventaris-Barang
-```
-2. Install dependensi
-```bash
-   composer install
-   npm install && npm run build
-```
-3. Salin file environment dan buat app key
-```bash
-   cp .env.example .env
-   php artisan key:generate
-```
-4. Atur koneksi database di `.env`
-5. Jalankan migration dan seeder
-```bash
-   php artisan migrate --seed
-```
-6. Jalankan aplikasi
-```bash
-   php artisan serve
-```
-   Buka `http://127.0.0.1:8000`
-
-## Akun Demo
-| Email | Password |
-|---|---|
-| demo@example.com | password |
-
-(Pastikan akun ini dibuat di seeder.)
 
 ## Cara Menggunakan
 1. Daftar akun lewat halaman **Register**, lalu login.
