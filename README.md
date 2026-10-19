@@ -52,8 +52,8 @@ Dibuat untuk Tes Magang ARRE Tech.
 **produks**: id, user_id, kode_barang, nama_barang, kategori, stok, satuan, harga_satuan, kondisi, timestamps
 
 ## Screenshot
-![Dashboard](gambar/dashboard.png)
-![Daftar Barang](gambar/daftarBarang.png)
+![Dashboard](\public\gambar\beranda.png)
+![Daftar Barang](\public\gambar\daftarBarang.png)
 
 ## Pembuat
 Nama Kamu (email atau GitHub)
