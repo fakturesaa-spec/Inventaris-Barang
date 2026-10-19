@@ -1,22 +1,21 @@
 @extends('layouts.produk')
 @section('content')
-    {{-- 3 kartu atas --}}
-    <section class="row g-3 mt-1 justify-content-center" aria-label="Dashboard metrics">
-
-        <div class="page-heading mb-4 ms-4 mt-5">
-            <div class="page-heading-copy">
-                <span class="page-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
-                <div>
-                    <p class="eyebrow mb-1">Sistem Inventaris Barang</p>
-                    <h1 class="h3 mb-1">Selamat Datang, {{ Auth::user()->name }}</h1>
-                </div>
+    <div class="page-heading mb-4 mt-4">
+        <div class="page-heading-copy">
+            <span class="page-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+            <div>
+                <p class="eyebrow mb-1">Sistem Inventaris Barang</p>
+                <h1 class="h3 mb-1">Selamat Datang, {{ Auth::user()->name }}</h1>
             </div>
         </div>
+    </div>
+
+    <section class="row g-3 mt-1" aria-label="Dashboard metrics">
 
         <div class="col-12 col-sm-6 col-xl-3">
             <article class="metric-card metric-primary">
                 <div class="metric-top">
-                    <span class="metric-label">TOTAL PRODUK</span>
+                    <span class="metric-label">TOTAL BARANG</span>
                     <span class="metric-icon"><i class="bi bi-box2-fill"></i></span>
                 </div>
                 <div class="metric-value">{{ $totalProduk }}</div>
@@ -27,7 +26,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-xl-3">
-            <article class="metric-card metric-success">
+            <article class="metric-card metric-warning">
                 <div class="metric-top">
                     <span class="metric-label">TOTAL STOK</span>
                     <span class="metric-icon"><i class="bi bi-boxes"></i></span>
@@ -40,7 +39,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-xl-3">
-            <article class="metric-card metric-danger">
+            <article class="metric-card metric-success">
                 <div class="metric-top">
                     <span class="metric-label">KONDISI BAIK</span>
                     <span class="metric-icon"><i class="bi bi-check2-circle"></i></span>
@@ -75,7 +74,7 @@
                     <a href="{{ route('produk.index') }}" class="btn btn-outline-primary btn-sm">Lihat Semua</a>
                 </div>
                 <div class="table-responsive">
-                    <table class="table align-middle mb-0">
+                    <table class="table align-middle mb-0 dashboard-recent-table">
                         <thead>
                             <tr>
                                 <th scope="col">Nama Barang</th>

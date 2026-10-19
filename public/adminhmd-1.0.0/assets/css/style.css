@@ -230,6 +230,7 @@ a {
   min-width: 0;
   min-height: 100vh;
   margin-left: var(--sidebar-width);
+  overflow-x: clip;
   transition: margin-left 0.2s ease;
 }
 
@@ -703,6 +704,12 @@ html[data-theme="dark"] .profile-button .avatar-sm {
   border-radius: 8px;
 }
 
+.product-search-toolbar .product-search-wrap {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
 .table-media {
   display: flex;
   align-items: center;
@@ -1060,6 +1067,39 @@ html[data-theme="dark"] .profile-button .avatar-sm {
 }
 
 @media (max-width: 575.98px) {
+  .dashboard-recent-table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .dashboard-recent-table th,
+  .dashboard-recent-table td {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .dashboard-recent-table th:nth-child(2),
+  .dashboard-recent-table td:nth-child(2),
+  .dashboard-recent-table th:nth-child(4),
+  .dashboard-recent-table td:nth-child(4) {
+    display: none;
+  }
+
+  .dashboard-recent-table th:first-child,
+  .dashboard-recent-table td:first-child {
+    width: 60%;
+  }
+
+  .dashboard-recent-table th:nth-child(3),
+  .dashboard-recent-table td:nth-child(3) {
+    width: 25%;
+  }
+
+  .dashboard-recent-table th:last-child,
+  .dashboard-recent-table td:last-child {
+    width: 15%;
+  }
+
   .page-heading,
   .panel-header {
     align-items: flex-start;
@@ -1346,6 +1386,11 @@ html[data-theme="dark"] .text-bg-secondary {
 }
 
 @media (max-width: 575.98px) {
+  .product-search-toolbar .table-search,
+  .product-search-toolbar .btn {
+    width: 100%;
+  }
+
   .page-heading-copy {
     width: 100%;
   }

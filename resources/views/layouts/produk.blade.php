@@ -18,11 +18,10 @@
 
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
             <div class="sidebar-header">
-                <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+                <a class="brand-mark" href="{{ route('dashboard') }}" aria-label="dashboard">
                     <span class="brand-icon"><i class="bi bi-box"></i></span>
                     <span class="brand-copy">
-                        <span class="brand-title">{{ Auth::user()->name }}</span>
-                        <span class="brand-subtitle">Selamat Datang</span>
+                        <span class="brand-title">Inventaris Barang</span>
                     </span>
                 </a>
             </div>
@@ -73,10 +72,8 @@
                                 aria-expanded="false" aria-label="Buka profil {{ Auth::user()->name }}">
                                 <img class="avatar-img avatar-sm"
                                     src="/adminhmd-1.0.0/assets/images/avatar/avatar-fallback.jpg" alt="Foto profil">
-                                <span>Profil</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end notification-menu">
-                                <div class="dropdown-header fw-bold text-body">Profil Anda</div>
                                 <div class="dropdown-item">
                                     <span class="notification-title">Nama</span>
                                     <span class="notification-time">{{ Auth::user()->name }}</span>
@@ -104,10 +101,9 @@
             </nav>
 
             <main class="dashboard-content">
-                <div class="container">
+                <div class="container-fluid">
                     @yield('content')
                 </div>
-
             </main>
 
             <footer class="admin-footer">

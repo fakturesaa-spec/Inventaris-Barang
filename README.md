@@ -7,52 +7,86 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Sistem Inventaris Barang
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aplikasi web berbasis Laravel untuk mencatat dan mengelola data inventaris barang.
+Dibuat untuk Tes Magang ARRE Tech.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur
+- Register, login, dan logout
+- CRUD barang: daftar, tambah, detail, edit, hapus
+- Validasi input (Form Request)
+- Pencarian barang
+- Dashboard ringkasan (total barang, total stok, kondisi, kategori)
+- Tampilan responsif dengan Bootstrap
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Teknologi
+- PHP 8.x, Laravel 1x
+- MySQL / SQLite
+- Bootstrap 5
+- Laravel Breeze (autentikasi)
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+## Cara Instalasi
+1. Clone repositori
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+   git clone https://github.com/username/Inventaris-Barang.git
+   cd Inventaris-Barang
 ```
+2. Install dependensi
+```bash
+   composer install
+   npm install && npm run build
+```
+3. Salin file environment dan buat app key
+```bash
+   cp .env.example .env
+   php artisan key:generate
+```
+4. Atur koneksi database di `.env`
+5. Jalankan migration dan seeder
+```bash
+   php artisan migrate --seed
+```
+6. Jalankan aplikasi
+```bash
+   php artisan serve
+```
+   Buka `http://127.0.0.1:8000`
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Akun Demo
+| Email | Password |
+|---|---|
+| demo@example.com | password |
 
-## Contributing
+(Pastikan akun ini dibuat di seeder.)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Cara Menggunakan
+1. Daftar akun lewat halaman **Register**, lalu login.
+2. Dashboard menampilkan ringkasan data barang.
+3. Buka menu **Daftar Barang** untuk melihat semua barang.
+4. Klik **Tambah Barang**, isi form, lalu simpan.
+5. Gunakan ikon mata untuk melihat detail, pensil untuk mengedit, dan tong sampah untuk menghapus.
+6. Gunakan kotak pencarian untuk mencari barang.
+7. Klik **Sign out** untuk keluar.
 
-## Code of Conduct
+## Struktur Proyek
+| File / Folder | Fungsi |
+|---|---|
+| `app/Models/Produk.php` | Model barang dan relasinya |
+| `app/Http/Controllers/ProdukController.php` | Logika CRUD barang |
+| `app/Http/Requests/` | Validasi input |
+| `database/migrations/` | Struktur tabel |
+| `database/seeders/` | Data awal dan akun demo |
+| `resources/views/produk/` | Tampilan CRUD (index, create, edit, show) |
+| `resources/views/layouts/` | Layout dan sidebar |
+| `routes/web.php` | Daftar route aplikasi |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Struktur Database
+**produks**: id, user_id, kode_barang, nama_barang, kategori, stok, satuan, harga_satuan, kondisi, timestamps
 
-## Security Vulnerabilities
+## Screenshot
+![Dashboard](screenshots/dashboard.png)
+![Daftar Barang](screenshots/daftar-barang.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Pembuat
+Nama Kamu (email atau GitHub)

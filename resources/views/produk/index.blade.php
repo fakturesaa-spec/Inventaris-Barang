@@ -16,16 +16,16 @@
         <div class="container-fluid px-3 px-lg-4 py-4">
 
             <section class="panel">
-                <div class="row g-2 align-items-end">
+                <div class="row g-2 align-items-center mb-3 product-search-toolbar">
                     <div class="col-12 col-sm">
-                        <div class="panel-header">
+                        <div class="product-search-wrap">
                             <input class="form-control form-control-sm table-search" type="search"
                                 placeholder="Cari Barang" data-table-search="ordersTable" aria-label="Search orders">
                         </div>
                     </div>
-                    <div class="col-12 col-sm-auto d-grid d-sm-block mb-1">
+                    <div class="col-12 col-sm-auto d-grid d-sm-block">
                         <a href="{{ route('produk.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-square me-1" aria-hidden="true"></i>Tambah Produk
+                            <i class="bi bi-plus-square me-1" aria-hidden="true"></i>Tambah Barang
                         </a>
                     </div>
                 </div>
@@ -55,23 +55,26 @@
                                     <td>{{ $item->kategori }}</td>
                                     <td>{{ $item->stok }}</td>
                                     <td>{{ $item->satuan }}</td>
-                                    <td>{{ $item->harga_satuan }}</td>
+                                    <td>Rp {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
                                     <td>{{ $item->kondisi }}</td>
-                                    <td>
-                                        <form action="{{ route('produk.destroy', $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                    <td class="text-nowarp">
+                                        <div class="d-flex gap-1 flex-nowrap">
+                                            <form action="{{ route('produk.destroy', $item->id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                                @csrf
+                                                @method('DELETE')
 
-                                            <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning"><i
-                                                    class="bi bi-pencil"></i></a>
-                                            <a href="{{ route('produk.show', $item->id) }}" class="btn btn-primary"><i
-                                                    class="bi bi-eye"></i></a>
+                                                <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning"><i
+                                                        class="bi bi-pencil"></i></a>
+                                                <a href="{{ route('produk.show', $item->id) }}" class="btn btn-primary"><i
+                                                        class="bi bi-eye"></i></a>
 
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @empty
