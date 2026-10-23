@@ -31,9 +31,13 @@
                     <span class="nav-icon"><i class="bi bi-house-door"></i></span>
                     <span class="nav-text">Beranda</span>
                 </a>
-                <a class="nav-link" href="{{ route('produk.index') }}">
+                <a class="nav-link" href="{{ route('barang.index') }}">
                     <span class="nav-icon"><i class="bi bi-box"></i></span>
                     <span class="nav-text">Daftar Barang</span>
+                </a>
+                <a class="nav-link" href="{{ route('peminjaman.index') }}">
+                    <span class="nav-icon"><i class="bi bi-box"></i></span>
+                    <span class="nav-text">Daftar Peminjam</span>
                 </a>
 
             </nav>

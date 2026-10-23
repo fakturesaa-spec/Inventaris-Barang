@@ -1,4 +1,4 @@
-@extends('layouts.produk')
+@extends('layouts.barang')
 @section('content')
     <div class="card">
   <div class="card-header">

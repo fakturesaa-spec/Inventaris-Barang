@@ -1,23 +1,23 @@
-@extends('layouts.produk')
+@extends('layouts.barang')
 @section('content')
     <div class="container-fluid px-3 px-lg-4 py-4">
         <div class="page-heading mb-4">
             <div class="page-heading-copy">
                 <span class="page-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
                 <div>
-                    <p class="eyebrow mb-1">Produk</p>
-                    <h1 class="h3 mb-1">Tambah Produk</h1>
-                    <p class="text-muted mb-0">Masukkan informasi produk yang akan disimpan.</p>
+                    <p class="eyebrow mb-1">Barang</p>
+                    <h1 class="h3 mb-1">Tambah Barang</h1>
+                    <p class="text-muted mb-0">Masukkan informasi barang yang akan disimpan.</p>
                 </div>
             </div>
         </div>
 
-        <form class="panel" method="POST" action="{{ route('produk.store') }}">
+        <form class="panel" method="POST" action="{{ route('barang.store') }}">
             @csrf
 
             <div class="panel-header">
                 <div>
-                    <h2 class="h5 mb-1 section-title"><i class="bi bi-pencil-square" aria-hidden="true"></i><span>Informasi Produk</span></h2>
+                    <h2 class="h5 mb-1 section-title"><i class="bi bi-pencil-square" aria-hidden="true"></i><span>Informasi Barang</span></h2>
                     <p class="text-muted mb-0">Lengkapi semua kolom sebelum menyimpan.</p>
                 </div>
             </div>
@@ -82,8 +82,8 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2 mt-4">
-                <a href="{{ route('produk.index') }}" class="btn btn-outline-secondary">Batal</a>
-                <button class="btn btn-primary" type="submit"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>Simpan Produk</button>
+                <a href="{{ route('barang.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <button class="btn btn-primary" type="submit"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>Simpan Barang</button>
             </div>
         </form>
     </div>

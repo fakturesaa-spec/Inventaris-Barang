@@ -21,8 +21,8 @@ Dibuat untuk Tes Magang ARRE Tech.
 - Tampilan responsif dengan Bootstrap
 
 ## Teknologi
-- PHP 8.x, Laravel 1x
-- MySQL / SQLite
+- PHP 8.3, Laravel 13
+- MySQL
 - Bootstrap 5
 - Laravel Breeze (autentikasi)
 
@@ -39,21 +39,18 @@ Dibuat untuk Tes Magang ARRE Tech.
 ## Struktur Proyek
 | File / Folder | Fungsi |
 |---|---|
-| `app/Models/Produk.php` | Model barang dan relasinya |
-| `app/Http/Controllers/ProdukController.php` | Logika CRUD barang |
+| `app/Models/Barang.php` | Model barang dan relasinya |
+| `app/Http/Controllers/BarangController.php` | Logika CRUD barang |
 | `app/Http/Requests/` | Validasi input |
 | `database/migrations/` | Struktur tabel |
 | `database/seeders/` | Data awal dan akun demo |
-| `resources/views/produk/` | Tampilan CRUD (index, create, edit, show) |
+| `resources/views/barang/` | Tampilan CRUD (index, create, edit, show) |
 | `resources/views/layouts/` | Layout dan sidebar |
 | `routes/web.php` | Daftar route aplikasi |
 
 ## Struktur Database
-**produks**: id, user_id, kode_barang, nama_barang, kategori, stok, satuan, harga_satuan, kondisi, timestamps
+**barangs**: id, user_id, kode_barang, nama_barang, kategori, stok, satuan, harga_satuan, kondisi, timestamps
 
-## Screenshot
-![Dashboard](screenshots/dashboard.png)
-![Daftar Barang](screenshots/daftar-barang.png)
 
 ## Pembuat
 Anif Fakturesa Ravael (fakturesa@gmail.com)

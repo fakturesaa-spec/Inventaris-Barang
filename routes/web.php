@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return redirect()->route('register');
 });
 
-Route::get('/dashboard', [ProdukController::class, 'dashboard'])
-->middleware(['auth', 'verified'])
-->name('dashboard');
+Route::get('/dashboard', [BarangController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -22,5 +22,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
-    Route::resource('produk', ProdukController::class);
+    Route::resource('barang', BarangController::class);
+    Route::resource('peminjaman', PeminjamanController::class);
 });

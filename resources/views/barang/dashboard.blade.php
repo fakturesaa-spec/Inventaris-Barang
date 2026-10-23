@@ -1,4 +1,4 @@
-@extends('layouts.produk')
+@extends('layouts.barang')
 @section('content')
     <div class="page-heading mb-4 mt-4">
         <div class="page-heading-copy">
@@ -18,7 +18,7 @@
                     <span class="metric-label">TOTAL BARANG</span>
                     <span class="metric-icon"><i class="bi bi-box2-fill"></i></span>
                 </div>
-                <div class="metric-value">{{ $totalProduk }}</div>
+                <div class="metric-value">{{ $totalBarang }}</div>
                 <div class="metric-meta">
                     Jumlah Seluruh Barang
                 </div>
@@ -71,7 +71,7 @@
                         <h2 class="h5 mb-1 section-title">Barang Terbaru</h2>
                         <p class="text-muted mb-0">Lima barang terakhir yang ditambahkan.</p>
                     </div>
-                    <a href="{{ route('produk.index') }}" class="btn btn-outline-primary btn-sm">Lihat Semua</a>
+                    <a href="{{ route('barang.index') }}" class="btn btn-outline-primary btn-sm">Lihat Semua</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle mb-0 dashboard-recent-table">
@@ -85,17 +85,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($produkTerbaru as $produk)
+                            @forelse ($barangTerbaru as $barang)
                                 <tr>
                                     <td>
-                                        <div class="fw-semibold">{{ $produk->nama_barang }}</div>
-                                        <small class="text-muted">{{ $produk->kode_barang }}</small>
+                                        <div class="fw-semibold">{{ $barang->nama_barang }}</div>
+                                        <small class="text-muted">{{ $barang->kode_barang }}</small>
                                     </td>
-                                    <td>{{ $produk->kategori }}</td>
-                                    <td>{{ $produk->stok }} {{ $produk->satuan }}</td>
-                                    <td>{{ $produk->kondisi }}</td>
+                                    <td>{{ $barang->kategori }}</td>
+                                    <td>{{ $barang->stok }} {{ $barang->satuan }}</td>
+                                    <td>{{ $barang->kondisi }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('produk.show', $produk->id) }}" class="btn btn-outline-secondary btn-sm" aria-label="Lihat {{ $produk->nama_barang }}">
+                                        <a href="{{ route('barang.show', $barang->id) }}" class="btn btn-outline-secondary btn-sm" aria-label="Lihat {{ $barang->nama_barang }}">
                                             <i class="bi bi-eye" aria-hidden="true"></i>
                                         </a>
                                     </td>
@@ -128,12 +128,6 @@
                     @empty
                         <p class="text-muted mb-3">Belum ada kategori barang.</p>
                     @endforelse
-                </div>
-                <div class="d-flex flex-wrap gap-2 mt-3">
-                    <a href="{{ route('produk.create') }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Tambah Barang
-                    </a>
-                    <a href="{{ route('produk.index') }}" class="btn btn-outline-secondary btn-sm">Daftar Barang</a>
                 </div>
             </section>
         </div>

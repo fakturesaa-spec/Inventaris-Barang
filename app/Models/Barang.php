@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Produk extends Model
+class Barang extends Model
 {
     protected $fillable = [
         'user_id',
@@ -21,5 +21,9 @@ class Produk extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function peminjaman (){
+        return $this->hasMany(Peminjaman::class, 'barang_id');
     }
 }

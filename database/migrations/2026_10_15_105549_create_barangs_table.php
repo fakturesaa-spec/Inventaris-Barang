@@ -11,15 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produks', function (Blueprint $table) {
+        Schema::create('barangs', function (Blueprint $table) {
             $table->id();
             $table->string('kode_barang');
             $table->string('nama_barang');
             $table->enum('kategori', ['Elektronik', 'ATK', 'Furniture', 'Lainnya']);
             $table->integer('stok');
             $table->enum('satuan', ['pcs', 'unit', 'box']);
-            $table->decimal('harga_satuan',15, 2);
-            $table->enum('kondisi', ['Baik','Rusak Ringan', 'Rusak Berat']);
+            $table->decimal('harga_satuan', 15, 2);
+            $table->enum('kondisi', ['Baik', 'Rusak Ringan', 'Rusak Berat']);
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produks');
+        Schema::dropIfExists('barangs');
     }
 };
