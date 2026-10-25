@@ -7,7 +7,9 @@ use App\Models\Peminjaman;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class PeminjamanController extends Controller
@@ -25,7 +27,6 @@ class PeminjamanController extends Controller
 
         return view('peminjaman.index', compact('peminjamans'));
 
-        
     }
 
     /**
@@ -56,7 +57,19 @@ class PeminjamanController extends Controller
             'status' => ['required', Rule::in(['Dipinjam', 'Dikembalikan', 'Terlambat'])],
         ]);
 
-        Peminjaman::create($data);
+        DB::transaction(function () use ($data): void {
+            $barang = Barang::query()
+                ->where('user_id', Auth::id())
+                ->lockForUpdate()
+                ->findOrFail($data['barang_id']);
+
+            if ($this->statusMenahanStok($data['status'])) {
+                $this->pastikanStokCukup($barang, $data['jumlah_pinjam']);
+                $barang->decrement('stok', $data['jumlah_pinjam']);
+            }
+
+            Peminjaman::create($data);
+        });
 
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil ditambahkan.');
     }
@@ -88,8 +101,6 @@ class PeminjamanController extends Controller
      */
     public function update(Request $request, Peminjaman $peminjaman): RedirectResponse
     {
-        $this->ensurePeminjamanMilikPengguna($peminjaman);
-
         $data = $request->validate([
             'barang_id' => [
                 'required',
@@ -103,7 +114,55 @@ class PeminjamanController extends Controller
             'status' => ['required', Rule::in(['Dipinjam', 'Dikembalikan', 'Terlambat'])],
         ]);
 
-        $peminjaman->update($data);
+        DB::transaction(function () use ($data, $peminjaman): void {
+            $peminjaman = Peminjaman::query()
+                ->lockForUpdate()
+                ->findOrFail($peminjaman->getKey());
+            $this->ensurePeminjamanMilikPengguna($peminjaman);
+
+            $barangIds = collect([$peminjaman->barang_id, $data['barang_id']])
+                ->unique()
+                ->sort()
+                ->values();
+            $barangs = Barang::query()
+                ->where('user_id', Auth::id())
+                ->whereIn('id', $barangIds)
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
+
+            $barangLama = $barangs->get($peminjaman->barang_id);
+            $barangBaru = $barangs->get($data['barang_id']);
+
+            abort_unless($barangLama && $barangBaru, 404);
+
+            $stokLamaDipakai = $this->statusMenahanStok($peminjaman->status) ? $peminjaman->jumlah_pinjam : 0;
+            $stokBaruDipakai = $this->statusMenahanStok($data['status']) ? $data['jumlah_pinjam'] : 0;
+
+            if ($barangLama->is($barangBaru)) {
+                $perubahanStok = $stokBaruDipakai - $stokLamaDipakai;
+
+                if ($perubahanStok > 0) {
+                    $this->pastikanStokCukup($barangBaru, $perubahanStok);
+                }
+
+                $barangBaru->stok -= $perubahanStok;
+                $barangBaru->save();
+            } else {
+                $barangLama->stok += $stokLamaDipakai;
+
+                if ($stokBaruDipakai > 0) {
+                    $this->pastikanStokCukup($barangBaru, $stokBaruDipakai);
+                    $barangBaru->stok -= $stokBaruDipakai;
+                }
+
+                $barangLama->save();
+                $barangBaru->save();
+            }
+
+            $peminjaman->update($data);
+        });
 
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil diperbarui.');
     }
@@ -113,8 +172,23 @@ class PeminjamanController extends Controller
      */
     public function destroy(Peminjaman $peminjaman): RedirectResponse
     {
-        $this->ensurePeminjamanMilikPengguna($peminjaman);
-        $peminjaman->delete();
+        DB::transaction(function () use ($peminjaman): void {
+            $peminjaman = Peminjaman::query()
+                ->lockForUpdate()
+                ->findOrFail($peminjaman->getKey());
+            $this->ensurePeminjamanMilikPengguna($peminjaman);
+
+            $barang = Barang::query()
+                ->where('user_id', Auth::id())
+                ->lockForUpdate()
+                ->findOrFail($peminjaman->barang_id);
+
+            if ($this->statusMenahanStok($peminjaman->status)) {
+                $barang->increment('stok', $peminjaman->jumlah_pinjam);
+            }
+
+            $peminjaman->delete();
+        });
 
         return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil dihapus.');
     }
@@ -125,5 +199,19 @@ class PeminjamanController extends Controller
             $peminjaman->barang()->where('user_id', Auth::id())->exists(),
             404
         );
+    }
+
+    private function statusMenahanStok(string $status): bool
+    {
+        return $status !== 'Dikembalikan';
+    }
+
+    private function pastikanStokCukup(Barang $barang, int $jumlahPinjam): void
+    {
+        if ($barang->stok < $jumlahPinjam) {
+            throw ValidationException::withMessages([
+                'jumlah_pinjam' => 'Jumlah pinjam melebihi stok tersedia. Stok tersisa: '.$barang->stok.'.',
+            ]);
+        }
     }
 }

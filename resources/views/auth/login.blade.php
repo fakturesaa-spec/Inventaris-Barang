@@ -1,47 +1,70 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to AplikasiArre">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Login | {{ config('app.name', 'AplikasiArre') }}</title>
+    <link rel="stylesheet" href="{{ asset('adminhmd-1.0.0/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminhmd-1.0.0/assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminhmd-1.0.0/assets/css/style.css') }}">
+</head>
+<body class="auth-body">
+    <button class="icon-button theme-toggle auth-theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
+        <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+    </button>
+    <main class="auth-page">
+        <section class="auth-card">
+            <a class="auth-brand text-decoration-none" href="{{ url('/') }}">
+                <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+                <span><strong>Inventaris Barang</strong></span>
+            </a>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
+            @if (session('status'))
+                <div class="alert alert-success" role="status">{{ session('status') }}</div>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
+                @csrf
+                <div class="mb-4">
+                    <h1 class="h3 mb-1">Login</h1>
+                    <p class="text-muted mb-0">Masuk ke akun Anda.</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="email">Alamat email</label>
+                    <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="username" required autofocus>
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @else
+                        <div class="invalid-feedback">Masukkan alamat email yang valid.</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label" for="password">Password</label>
+                        @if (Route::has('password.request'))
+                            <a class="small fw-semibold" href="{{ route('password.request') }}">Lupa password?</a>
+                        @endif
+                    </div>
+                    <input class="form-control @error('password') is-invalid @enderror" id="password" type="password" name="password" autocomplete="current-password" required>
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @else
+                        <div class="invalid-feedback">Password wajib diisi.</div>
+                    @enderror
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="remember" name="remember" value="1" @checked(old('remember'))>
+                    <label class="form-check-label" for="remember">Ingat saya</label>
+                </div>
+                <button class="btn btn-primary w-100" type="submit"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Masuk</button>
+            </form>
+
+            <div class="auth-footer">Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a></div>
+        </section>
+    </main>
+    <script src="{{ asset('adminhmd-1.0.0/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('adminhmd-1.0.0/assets/js/main.js') }}"></script>
+</body>
+</html>

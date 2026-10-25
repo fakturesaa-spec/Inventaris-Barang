@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class BarangController extends Controller
@@ -117,7 +118,25 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        $barang->delete();
+        $berhasilDihapus = DB::transaction(function () use ($barang): bool {
+            $barang = Barang::query()
+                ->where('user_id', Auth::id())
+                ->lockForUpdate()
+                ->findOrFail($barang->getKey());
+
+            if ($barang->peminjaman()->whereIn('status', ['Dipinjam', 'Terlambat'])->exists()) {
+                return false;
+            }
+
+            $barang->delete();
+
+            return true;
+        });
+
+        if (! $berhasilDihapus) {
+            return redirect()->route('barang.index')
+                ->with('error', 'Barang tidak dapat dihapus karena masih memiliki peminjaman aktif.');
+        }
 
         return redirect()->route('barang.index')->with('success', 'Berhasil Menghapus Barang');
     }

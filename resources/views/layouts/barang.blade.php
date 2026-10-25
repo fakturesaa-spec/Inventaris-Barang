@@ -36,7 +36,7 @@
                     <span class="nav-text">Daftar Barang</span>
                 </a>
                 <a class="nav-link" href="{{ route('peminjaman.index') }}">
-                    <span class="nav-icon"><i class="bi bi-box"></i></span>
+                    <span class="nav-icon"><i class="bi bi-clipboard-data" aria-hidden="true"></i></span>
                     <span class="nav-text">Daftar Peminjam</span>
                 </a>
 
