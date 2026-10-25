@@ -55,7 +55,6 @@ Dibuat untuk Tes Magang ARRE Tech.
 | `app/Http/Controllers/PeminjamanController.php` | Logika peminjaman dan perubahan stok |
 | `app/Http/Requests/` | Request autentikasi dan validasi terkait |
 | `database/migrations/` | Struktur tabel |
-| `database/seeders/` | Data awal dan akun demo |
 | `resources/views/barang/` | Tampilan CRUD (index, create, edit, show) |
 | `resources/views/peminjaman/` | Tampilan daftar, form, dan detail peminjaman |
 | `resources/views/auth/` | Tampilan login dan register |
